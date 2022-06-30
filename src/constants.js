@@ -13,6 +13,7 @@ export const MODULE_NAME = {
     SOCIAL: 'social',
     DEVICE: 'device',
     LEADERBOARD: 'leaderboard',
+    PAYMENTS: 'payments'
 }
 
 export const EVENT_NAME = {

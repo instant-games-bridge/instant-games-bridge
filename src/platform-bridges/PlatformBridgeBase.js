@@ -147,6 +147,11 @@ class PlatformBridgeBase {
         return false
     }
 
+    //payments
+    get isPaymentsSupported() {
+        return false
+    }
+
 
     LOCAL_STORAGE_GAME_DATA_KEY = 'game_data'
 
@@ -276,6 +281,12 @@ class PlatformBridgeBase {
     }
 
     showLeaderboardNativePopup(options) {
+        return Promise.reject()
+    }
+
+
+    //payments
+    showOrderPayments(title) {
         return Promise.reject()
     }
 

@@ -111,6 +111,12 @@ class VkPlatformBridge extends PlatformBridgeBase {
     }
 
 
+    //payments
+    get isPaymentsSupported() {
+        return true
+    }
+
+
     initialize() {
         if (this._isInitialized)
             return Promise.resolve()
@@ -329,6 +335,24 @@ class VkPlatformBridge extends PlatformBridgeBase {
             data.global = options.global ? 1 : 0
 
         return this.#sendRequestToVKBridge(ACTION_NAME.SHOW_LEADERBOARD_NATIVE_POPUP, 'VKWebAppShowLeaderBoardBox', data)
+    }
+
+
+    //payments
+    showOrderPayments(title) {
+        return new Promise(resolve => {
+            this._platformSdk
+                .send("VKWebAppShowOrderBox", {type: 'item', item: title}) //options.itemTitle
+                .then(data => {
+                    if (data['success']) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
+                }).catch(() =>{
+                    resolve(false)
+                })
+        })
     }
 
 

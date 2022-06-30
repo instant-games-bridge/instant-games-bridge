@@ -11,6 +11,7 @@ import AdvertisementModule from './modules/AdvertisementModule'
 import SocialModule from './modules/SocialModule'
 import DeviceModule from './modules/DeviceModule'
 import LeaderboardModule from './modules/LeaderboardModule'
+import PaymentsModule from './Modules/PaymentsModule'
 
 class InstantGamesBridge {
 
@@ -48,6 +49,10 @@ class InstantGamesBridge {
 
     get leaderboard() {
         return this.#getModule(MODULE_NAME.LEADERBOARD)
+    }
+
+    get payments() {
+        return this.#getModule(MODULE_NAME.PAYMENTS)
     }
 
     get PLATFORM_ID() {

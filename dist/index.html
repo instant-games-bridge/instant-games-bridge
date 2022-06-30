@@ -160,6 +160,16 @@
             <button id="leaderboard-get-entries-button">Get Entries</button>
             <p id="leaderboard-entries-container"></p>
         </div>
+
+        <div class="section" id="payments">
+            <h2>Payments</h2>
+            <p>Is supported: <span id="payments-is-supported-text"></span></p>
+            <br>
+            <input type="text" id="payments-item-title-input" placeholder="Item name" />
+            <button id="show-order-payments-button">Show order payments</button>
+            <br>
+            <p>Order result: <span id="order-payments-result"></span></p>
+        </div>
     </div>
 
     <script src="./instant-games-bridge.js"></script>
@@ -172,6 +182,7 @@
         const advertisementSection = document.getElementById('advertisement-section')
         const socialSection = document.getElementById('social-section')
         const leaderboardSection = document.getElementById('leaderboard-section')
+        const payments = document.getElementById('payments')
 
         platformSection.style.display = 'none'
         deviceSection.style.display = 'none'
@@ -180,6 +191,7 @@
         advertisementSection.style.display = 'none'
         socialSection.style.display = 'none'
         leaderboardSection.style.display = 'none'
+        payments.style.display = 'none'
 
         const platformIdText = document.getElementById('platform-id-text')
         const platformLanguageText = document.getElementById('platform-language-text')
@@ -247,6 +259,11 @@
         const leaderboardGetEntriesButton = document.getElementById('leaderboard-get-entries-button')
         const leaderboardEntriesContainer = document.getElementById('leaderboard-entries-container')
 
+        const paymentsIsSupportedText = document.getElementById('payments-is-supported-text')
+        const paymentsItemTitleInput = document.getElementById('payments-item-title-input')
+        const paymentsShowOrderButton = document.getElementById('show-order-payments-button')
+        const orderPaymentsResult = document.getElementById('order-payments-result')
+
         initializeButton.addEventListener('click', () => {
             if (instantGamesBridge.isInitialized)
                 return
@@ -298,6 +315,8 @@
                     leaderboardIsSetScoreSupportedText.innerText = instantGamesBridge.leaderboard.isSetScoreSupported
                     leaderboardIsGetEntriesSupportedText.innerText = instantGamesBridge.leaderboard.isGetEntriesSupported
 
+                    paymentsIsSupportedText.innerText = instantGamesBridge.payments.isSupported
+
                     platformSection.style.display = 'block'
                     deviceSection.style.display = 'block'
                     playerSection.style.display = 'block'
@@ -305,6 +324,7 @@
                     advertisementSection.style.display = 'block'
                     socialSection.style.display = 'block'
                     leaderboardSection.style.display = 'block'
+                    payments.style.display = 'block'
                 })
         })
 
@@ -450,6 +470,15 @@
                     })
                     leaderboardEntriesContainer.innerText = text
                 })
+        })
+
+        paymentsShowOrderButton.addEventListener('click', () => {
+            console.log(paymentsItemTitleInput.value)
+            instantGamesBridge.payments
+            .showOrderPayments(paymentsItemTitleInput.value)
+            .then(orderResult => {
+                orderPaymentsResult.innerText = orderResult
+            })
         })
     </script>
 </body>
