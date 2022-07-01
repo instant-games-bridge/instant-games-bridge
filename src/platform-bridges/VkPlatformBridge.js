@@ -342,7 +342,7 @@ class VkPlatformBridge extends PlatformBridgeBase {
     showOrderPayments(title) {
         return new Promise(resolve => {
             this._platformSdk
-                .send("VKWebAppShowOrderBox", {type: 'item', item: title}) //options.itemTitle
+                .send("VKWebAppShowOrderBox", {type: 'item', item: title})
                 .then(data => {
                     if (data['success']) {
                         resolve(true)

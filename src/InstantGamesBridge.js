@@ -100,6 +100,7 @@ class InstantGamesBridge {
                     this.#modules[MODULE_NAME.SOCIAL] = new SocialModule(this.#platformBridge)
                     this.#modules[MODULE_NAME.DEVICE] = new DeviceModule(this.#platformBridge)
                     this.#modules[MODULE_NAME.LEADERBOARD] = new LeaderboardModule(this.#platformBridge)
+                    this.#modules[MODULE_NAME.PAYMENTS] = new PaymentsModule(this.#platformBridge)
 
                     this.#isInitialized = true
                     console.log('%c InstantGamesBridge v.' + this.version + ' initialized. ', 'background: #01A5DA; color: white')
