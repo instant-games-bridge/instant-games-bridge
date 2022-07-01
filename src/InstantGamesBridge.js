@@ -11,7 +11,7 @@ import AdvertisementModule from './modules/AdvertisementModule'
 import SocialModule from './modules/SocialModule'
 import DeviceModule from './modules/DeviceModule'
 import LeaderboardModule from './modules/LeaderboardModule'
-import PaymentsModule from './Modules/PaymentsModule'
+import PaymentsModule from './modules/PaymentsModule'
 
 class InstantGamesBridge {
 
