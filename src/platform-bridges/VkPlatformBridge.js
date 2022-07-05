@@ -14,7 +14,11 @@ class VkPlatformBridge extends PlatformBridgeBase {
     get platformLanguage() {
         let url = new URL(window.location.href)
         if (url.searchParams.has('language')) {
-            switch (url.searchParams.get('language')) {
+            let language = url.searchParams.get('language')
+            try { language = parseInt(language) }
+            catch (e) { }
+
+            switch (language) {
                 case 0:
                     return 'ru'
                 case 1:
