@@ -15,6 +15,9 @@ class TggPlatformBridge extends PlatformBridgeBase {
         return 'en'
     }
 
+    get referrer() {
+        return "no referrer"
+    }
 
     // player
     get isPlayerAuthorizationSupported() {

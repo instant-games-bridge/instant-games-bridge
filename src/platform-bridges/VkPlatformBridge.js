@@ -41,6 +41,13 @@ class VkPlatformBridge extends PlatformBridgeBase {
         return super.platformPayload
     }
 
+    get referrer() {
+        let url = new URL(window.location.href)
+        if (url.searchParams.has('referrer')) {
+            return url.searchParams.get('referrer')
+        }
+        return super.referrer
+    }
 
     // device
     get deviceType() {
@@ -60,7 +67,6 @@ class VkPlatformBridge extends PlatformBridgeBase {
 
         return super.deviceType
     }
-
 
     // player
     get isPlayerAuthorizationSupported() {
@@ -358,7 +364,6 @@ class VkPlatformBridge extends PlatformBridgeBase {
                 })
         })
     }
-
 
     #sendRequestToVKBridge(actionName, vkMethodName, parameters = { }, responseSuccessKey = 'result') {
         let promiseDecorator = this._getPromiseDecorator(actionName)

@@ -44,6 +44,9 @@ class PlatformBridgeBase {
         return url.searchParams.get('payload')
     }
 
+    get referrer() {
+        return "no referrer"
+    }
 
     // player
     get isPlayerAuthorizationSupported() {
