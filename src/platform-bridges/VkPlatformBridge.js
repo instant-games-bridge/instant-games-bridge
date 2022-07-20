@@ -41,6 +41,13 @@ class VkPlatformBridge extends PlatformBridgeBase {
         return super.platformPayload
     }
 
+    get referrer() {
+        let url = new URL(window.location.href)
+        if (url.searchParams.has('referrer')) {
+            return url.searchParams.get('referrer')
+        }
+        return super.referrer
+    }
 
     // device
     get deviceType() {
@@ -60,7 +67,6 @@ class VkPlatformBridge extends PlatformBridgeBase {
 
         return super.deviceType
     }
-
 
     // player
     get isPlayerAuthorizationSupported() {
@@ -112,6 +118,12 @@ class VkPlatformBridge extends PlatformBridgeBase {
 
     get isLeaderboardNativePopupSupported() {
         return this.deviceType === 'mobile'
+    }
+
+
+    //payments
+    get isPaymentsSupported() {
+        return true
     }
 
 
@@ -335,6 +347,23 @@ class VkPlatformBridge extends PlatformBridgeBase {
         return this.#sendRequestToVKBridge(ACTION_NAME.SHOW_LEADERBOARD_NATIVE_POPUP, 'VKWebAppShowLeaderBoardBox', data)
     }
 
+
+    //payments
+    showOrderPayments(title) {
+        return new Promise(resolve => {
+            this._platformSdk
+                .send("VKWebAppShowOrderBox", {type: 'item', item: title})
+                .then(data => {
+                    if (data['success']) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
+                    }
+                }).catch(() =>{
+                    resolve(false)
+                })
+        })
+    }
 
     #sendRequestToVKBridge(actionName, vkMethodName, parameters = { }, responseSuccessKey = 'result') {
         let promiseDecorator = this._getPromiseDecorator(actionName)

@@ -25,6 +25,10 @@ class YandexPlatformBridge extends PlatformBridgeBase {
         return super.deviceType
     }
 
+    get referrer() {
+        return "no referrer"
+    }
+
 
     // player
     get isPlayerAuthorizationSupported() {

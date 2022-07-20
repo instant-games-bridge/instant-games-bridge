@@ -18,6 +18,9 @@ class PlatformModule extends ModuleBase {
         return this._platformBridge.platformPayload
     }
 
+    get referrer() {
+        return this._platformBridge.referrer
+    }
 }
 
 export default PlatformModule

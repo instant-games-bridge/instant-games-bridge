@@ -44,6 +44,9 @@ class PlatformBridgeBase {
         return url.searchParams.get('payload')
     }
 
+    get referrer() {
+        return "no referrer"
+    }
 
     // player
     get isPlayerAuthorizationSupported() {
@@ -144,6 +147,11 @@ class PlatformBridgeBase {
     }
 
     get isLeaderboardGetEntriesSupported() {
+        return false
+    }
+
+    //payments
+    get isPaymentsSupported() {
         return false
     }
 
@@ -276,6 +284,12 @@ class PlatformBridgeBase {
     }
 
     showLeaderboardNativePopup(options) {
+        return Promise.reject()
+    }
+
+
+    //payments
+    showOrderPayments(title) {
         return Promise.reject()
     }
 
