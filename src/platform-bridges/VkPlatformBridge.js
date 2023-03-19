@@ -142,10 +142,8 @@ class VkPlatformBridge extends PlatformBridgeBase {
                     .send('VKWebAppInit')
                     .then(() => {
 
-                        if (window.bridgeExtensions && window.bridgeExtensions.vk && window.bridgeExtensions.vk.banner) {
-                            if (this.#platform === 'html5_android' || this.#platform === 'html5_ios') {
-                                this._isBannerSupported = true
-                            }
+                        if (this.#platform === 'html5_android' || this.#platform === 'html5_ios') {
+                            this._isBannerSupported = true
                         }
 
                         this._platformSdk.send('VKWebAppGetUserInfo')
@@ -318,25 +316,34 @@ class VkPlatformBridge extends PlatformBridgeBase {
 
     // advertisement
     showBanner(options) {
-        this._platformSdk
-            .send('VKWebAppGetAds')
-            .then(data => {
-                let position = 'bottom'
-                if (options && options.position) {
-                    position = options.position
-                }
+        let requestOptions = {banner_location: options?.position ?? 'bottom', can_close: false, layout_type: 'resize'};
 
-                window.bridgeExtensions.vk.banner.show(data, position)
-                this._setBannerState(BANNER_STATE.SHOWN)
+        this._platformSdk
+            .send('VKWebAppShowBannerAd', requestOptions)
+            .then(data => {
+                if (data.result) {
+                    this._setBannerState(BANNER_STATE.SHOWN)
+                } else {
+                    this._setBannerState(BANNER_STATE.HIDDEN)
+                }
             })
             .catch(error => {
                 this._setBannerState(BANNER_STATE.FAILED)
-            })
+            });
     }
 
     hideBanner() {
-        window.bridgeExtensions.vk.banner.hide()
-        this._setBannerState(BANNER_STATE.HIDDEN)
+        this._platformSdk
+            .send('VKWebAppHideBannerAd')
+            .then(data => {
+                if (!data.result) {
+                    this._setBannerState(BANNER_STATE.HIDDEN)
+                } else {
+                    this._setBannerState(BANNER_STATE.SHOWN)
+                }
+            }).catch(error => {
+                this._setBannerState(BANNER_STATE.FAILED)
+            });
     }
 
     showInterstitial() {
