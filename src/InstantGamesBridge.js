@@ -27,6 +27,7 @@ import PaymentsModule from './modules/PaymentsModule'
 import CrazyGamesPlatformBridge from './platform-bridges/CrazyGamesPlatformBridge'
 import AbsoluteGamesPlatformBridge from './platform-bridges/AbsoluteGamesPlatformBridge'
 import GameDistributionPlatformBridge from './platform-bridges/GameDistributionPlatformBridge'
+import VkPlayPlatformBridge from './platform-bridges/VkPlayPlatformBridge'
 
 class InstantGamesBridge {
     get version() {
@@ -119,9 +120,9 @@ class InstantGamesBridge {
 
     #platformBridge = null
 
-    #modules = { }
+    #modules = {}
 
-    #overriddenModules = { }
+    #overriddenModules = {}
 
     initialize(options) {
         if (this.#isInitialized) {
@@ -243,6 +244,12 @@ class InstantGamesBridge {
             case PLATFORM_ID.GAME_DISTRIBUTION: {
                 this.#platformBridge = new GameDistributionPlatformBridge(
                     this._options && this._options.platforms && this._options.platforms[PLATFORM_ID.GAME_DISTRIBUTION],
+                )
+                break
+            }
+            case PLATFORM_ID.VK_PLAY: {
+                this.#platformBridge = new VkPlayPlatformBridge(
+                    this._options && this._options.platforms && this._options.platforms[PLATFORM_ID.VK_PLAY],
                 )
                 break
             }

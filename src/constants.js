@@ -1,5 +1,6 @@
 export const PLATFORM_ID = {
     VK: 'vk',
+    VK_PLAY: 'vk_play',
     YANDEX: 'yandex',
     CRAZY_GAMES: 'crazy_games',
     ABSOLUTE_GAMES: 'absolute_games',
@@ -65,6 +66,13 @@ export const DEVICE_TYPE = {
     TV: 'tv',
 }
 
+export const LOGIN_STATUS = {
+    NOT_AUTHORIZED: 0,
+    NOT_REGISTRATED: 1,
+    REGISTRATED: 2,
+    PREMIUM_REGISTRATED: 3,
+}
+
 export const PLATFORM_MESSAGE = {
     GAME_READY: 'game_ready',
     IN_GAME_LOADING_STARTED: 'in_game_loading_started',
@@ -89,6 +97,8 @@ export const ACTION_NAME = {
     GET_LEADERBOARD_ENTRIES: 'get_leaderboard_entries',
     GET_PURCHASES: 'get_purchases',
     GET_CATALOG: 'get_catalog',
+    GET_PROFILE: 'get_profile',
+    GET_LOGIN_STATUS: 'get_login_status',
     PURCHASE: 'purchase',
     CONSUME_PURCHASE: 'consume_purchase',
     SHOW_LEADERBOARD_NATIVE_POPUP: 'show_leaderboard_native_popup',
