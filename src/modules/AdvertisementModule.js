@@ -153,16 +153,24 @@ class AdvertisementModule extends ModuleBase {
             return
         }
 
-        this._platformBridge.showInterstitial()
+        this._platformBridge.showInterstitial(options)
     }
 
-    showRewarded() {
+    showRewarded(options) {
         if (this.#hasAdvertisementInProgress()) {
             return
         }
 
+        if (options) {
+            const platformDependedOptions = options[this._platformBridge.platformId]
+            if (platformDependedOptions) {
+                this.showRewarded(platformDependedOptions)
+                return
+            }
+        }
+
         this._platformBridge._setRewardedState(REWARDED_STATE.LOADING)
-        this._platformBridge.showRewarded()
+        this._platformBridge.showRewarded(options)
     }
 
     #startInterstitialTimer() {

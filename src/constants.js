@@ -67,10 +67,10 @@ export const DEVICE_TYPE = {
 }
 
 export const LOGIN_STATUS = {
-    NOT_AUTHORIZED: 0,
-    NOT_REGISTRATED: 1,
-    REGISTRATED: 2,
-    PREMIUM_REGISTRATED: 3,
+    NOT_AUTHORIZED: '0',
+    NOT_REGISTRATED: '1',
+    REGISTRATED: '2',
+    PREMIUM_REGISTRATED: '3',
 }
 
 export const PLATFORM_MESSAGE = {
@@ -94,6 +94,7 @@ export const ACTION_NAME = {
     RATE: 'rate',
     SET_LEADERBOARD_SCORE: 'set_leaderboard_score',
     GET_LEADERBOARD_SCORE: 'get_leaderboard_score',
+    GET_ADVERTISEMENT: 'get_advertisement',
     GET_LEADERBOARD_ENTRIES: 'get_leaderboard_entries',
     GET_PURCHASES: 'get_purchases',
     GET_CATALOG: 'get_catalog',

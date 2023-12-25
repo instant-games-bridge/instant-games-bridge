@@ -2,7 +2,10 @@ import PlatformBridgeBase from './PlatformBridgeBase'
 import { addJavaScript, waitFor } from '../common/utils'
 import {
     PLATFORM_ID,
-    ACTION_NAME, LOGIN_STATUS,
+    REWARDED_STATE,
+    INTERSTITIAL_STATE,
+    ACTION_NAME,
+    LOGIN_STATUS,
 } from '../constants'
 
 const getSdkUrl = (gameId) => `//vkplay.ru/app/${gameId}/static/mailru.core.js`
@@ -24,6 +27,9 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
             userProfileCallback: (profile) => this.#setProfile(profile),
             getLoginStatusCallback: (status) => this.#setLoginStatus(status),
             registerUserCallback: (registerInfo) => this.#setRegistrationInfo(registerInfo),
+            adsCallback: (adsIfo) => this.#setAdsInfo(adsIfo),
+            getGameInventoryItemsCallback: (inventoryItems) => this.#setInventoryItems(inventoryItems),
+            paymentReceivedCallback: (inventoryItems) => this.#setPaymentStatus(inventoryItems),
         }
     }
 
@@ -62,6 +68,33 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
         this._resolvePromiseDecorator(ACTION_NAME.AUTHORIZE_PLAYER)
     }
 
+    #setAdsInfo(adsInfo) {
+        if (adsInfo.type === 'adError') {
+            this._rejectPromiseDecorator(ACTION_NAME.GET_ADVERTISEMENT, adsInfo.code)
+            return
+        }
+
+        this._resolvePromiseDecorator(ACTION_NAME.GET_ADVERTISEMENT)
+    }
+
+    #setInventoryItems(inventoryItems) {
+        if (inventoryItems?.length === 0) {
+            this._rejectPromiseDecorator(ACTION_NAME.GET_CATALOG)
+            return
+        }
+
+        this._resolvePromiseDecorator(ACTION_NAME.GET_CATALOG, inventoryItems)
+    }
+
+    #setPaymentStatus(paymentStatus) {
+        if (!paymentStatus?.uid) {
+            this._rejectPromiseDecorator(ACTION_NAME.CONSUME_PURCHASE)
+            return
+        }
+
+        this._resolvePromiseDecorator(ACTION_NAME.CONSUME_PURCHASE)
+    }
+
     initialize() {
         if (this._isInitialized) {
             return Promise.resolve()
@@ -97,6 +130,62 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
         }
 
         return promiseDecorator.promise
+    }
+
+    // payments
+
+    getPaymentsCatalog() {
+        const promiseDecorator = this._getPromiseDecorator(ACTION_NAME.GET_CATALOG)
+        if (!promiseDecorator) {
+            this._platformSdk.getGameInventoryItems()
+        }
+        return promiseDecorator.promise
+    }
+
+    consumePurchase(options) {
+        if (!options) {
+            return Promise.reject()
+        }
+        const promiseDecorator = this._getPromiseDecorator(ACTION_NAME.CONSUME_PURCHASE)
+        if (!promiseDecorator) {
+            if (options.ids) {
+                this._platformSdk.paymentFrameItem(options)
+            } else {
+                this._platformSdk.paymentFrame(options)
+            }
+        }
+        return promiseDecorator.promise
+    }
+
+    // advertisement
+
+    showInterstitial(options) {
+        const promiseDecorator = this._getPromiseDecorator(ACTION_NAME.GET_ADVERTISEMENT)
+        const { sources } = options || {}
+        if (!promiseDecorator) {
+            this._platformSdk.showAds({ sources, interstitial: true })
+            this._setInterstitialState(INTERSTITIAL_STATE.OPENED)
+        }
+        promiseDecorator.promise.then(() => {
+            this._setInterstitialState(INTERSTITIAL_STATE.CLOSED)
+        }).catch(() => {
+            this._setInterstitialState(INTERSTITIAL_STATE.FAILED)
+        })
+    }
+
+    showRewarded(options) {
+        const promiseDecorator = this._getPromiseDecorator(ACTION_NAME.GET_ADVERTISEMENT)
+        const { sources } = options || {}
+        if (!promiseDecorator) {
+            this._platformSdk.showAds({ sources, interstitial: false })
+            this._setInterstitialState(REWARDED_STATE.OPENED)
+        }
+        promiseDecorator.promise.then(() => {
+            this._setInterstitialState(REWARDED_STATE.REWARDED)
+            this._setInterstitialState(REWARDED_STATE.CLOSED)
+        }).catch(() => {
+            this._setInterstitialState(REWARDED_STATE.FAILED)
+        })
     }
 
     // player
