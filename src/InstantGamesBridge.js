@@ -202,6 +202,7 @@ class InstantGamesBridge {
             }
         } else {
             const url = new URL(window.location.href)
+
             const yandexUrl = ['y', 'a', 'n', 'd', 'e', 'x', '.', 'n', 'e', 't'].join('')
             if (url.hostname.includes(yandexUrl) || url.hash.includes('yandex')) {
                 platformId = PLATFORM_ID.YANDEX
@@ -213,9 +214,10 @@ class InstantGamesBridge {
                 platformId = PLATFORM_ID.VK
             } else if (url.searchParams.has('app_id') && url.searchParams.has('player_id') && url.searchParams.has('game_sid') && url.searchParams.has('auth_key')) {
                 platformId = PLATFORM_ID.ABSOLUTE_GAMES
+            } else if (url.hostname.includes('s3.eponesh.')) {
+                platformId = PLATFORM_ID.VK_PLAY
             }
         }
-
         switch (platformId) {
             case PLATFORM_ID.VK: {
                 this.#platformBridge = new VkPlatformBridge(

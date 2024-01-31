@@ -5,8 +5,14 @@ import {
     REWARDED_STATE,
     INTERSTITIAL_STATE,
     ACTION_NAME,
-    LOGIN_STATUS,
 } from '../constants'
+
+export const LOGIN_STATUS = {
+    NOT_AUTHORIZED: 0,
+    NOT_REGISTRATED: 1,
+    REGISTRATED: 2,
+    PREMIUM_REGISTRATED: 3,
+}
 
 const getSdkUrl = (gameId) => `//vkplay.ru/app/${gameId}/static/mailru.core.js`
 
@@ -49,6 +55,7 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
     }
 
     #setLoginStatus(loginInfo) {
+        console.log('=====setLogingInfo', loginInfo)
         if (loginInfo.status === 'error') {
             this._rejectPromiseDecorator(ACTION_NAME.GET_LOGIN_STATUS, loginInfo.errmsg)
             return
@@ -60,6 +67,7 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
     }
 
     #setRegistrationInfo(regInfo) {
+        console.log('=====setRegistrationInfo', regInfo)
         if (regInfo.status === 'error') {
             this._rejectPromiseDecorator(ACTION_NAME.AUTHORIZE_PLAYER, regInfo.errmsg)
             return
@@ -196,7 +204,7 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
         }
         const promiseDecorator = this._getPromiseDecorator(ACTION_NAME.AUTHORIZE_PLAYER)
         if (!promiseDecorator) {
-            this._platformSdk.registerUser()
+           return this._platformSdk.registerUser();
         }
         return promiseDecorator.promise.then(() => this._platformSdk.reloadWindow())
     }

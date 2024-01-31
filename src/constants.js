@@ -66,13 +66,6 @@ export const DEVICE_TYPE = {
     TV: 'tv',
 }
 
-export const LOGIN_STATUS = {
-    NOT_AUTHORIZED: '0',
-    NOT_REGISTRATED: '1',
-    REGISTRATED: '2',
-    PREMIUM_REGISTRATED: '3',
-}
-
 export const PLATFORM_MESSAGE = {
     GAME_READY: 'game_ready',
     IN_GAME_LOADING_STARTED: 'in_game_loading_started',
