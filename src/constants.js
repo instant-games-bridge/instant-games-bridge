@@ -1,6 +1,7 @@
 export const PLATFORM_ID = {
     VK: 'vk',
     VK_PLAY: 'vk_play',
+    OK: 'ok',
     YANDEX: 'yandex',
     CRAZY_GAMES: 'crazy_games',
     ABSOLUTE_GAMES: 'absolute_games',
@@ -104,4 +105,6 @@ export const ERROR = {
     STORAGE_NOT_SUPPORTED: { message: 'Storage not supported' },
     GAME_DISTRIBUTION_GAME_ID_IS_UNDEFINED: { message: 'GameDistribution Game ID is undefined' },
     VK_PLAY_GAME_ID_IS_UNDEFINED: { message: 'VK Play Game ID is undefined' },
+    OK_GAME_PARAMS_NOT_FOUND: { message: 'OK Game params are not found' },
+    INVITE_FRIENDS_MESSAGE_LENGTH_ERROR: { message: 'Message is too long' },
 }

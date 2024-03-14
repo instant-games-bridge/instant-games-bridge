@@ -33,8 +33,15 @@ class SocialModule extends ModuleBase {
         return this._platformBridge.isExternalLinksAllowed
     }
 
-    inviteFriends() {
-        return this._platformBridge.inviteFriends()
+    inviteFriends(options) {
+        if (options) {
+            const platformDependedOptions = options[this._platformBridge.platformId]
+            if (platformDependedOptions) {
+                return this.inviteFriends(platformDependedOptions)
+            }
+        }
+
+        return this._platformBridge.inviteFriends(options)
     }
 
     joinCommunity(options) {

@@ -38,7 +38,7 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
             if (!this._options || !this._options.gameId) {
                 this._rejectPromiseDecorator(ACTION_NAME.INITIALIZE, ERROR.VK_PLAY_GAME_ID_IS_UNDEFINED)
             } else {
-                const gameId = this._options.gameId
+                const { gameId } = this._options
                 const options = {
                     appid: gameId,
                     userProfileCallback: (data) => this.#onGetUserProfileCompleted(data),
@@ -130,6 +130,7 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
     }
 
     #onShowAdsCompleted(data) {
+        const isFailed = data.code && data.code === 'AdsNotFound'
         switch (data.type) {
             case 'adCompleted':
                 if (this.#currentAdvertisementIsRewarded) {
@@ -147,12 +148,13 @@ class VkPlayPlatformBridge extends PlatformBridgeBase {
                 }
                 break
             case 'adDismissed':
-                let isFailed = data.code && data.code === 'AdsNotFound'
                 if (this.#currentAdvertisementIsRewarded) {
                     this._setRewardedState(isFailed ? REWARDED_STATE.FAILED : REWARDED_STATE.CLOSED)
                 } else {
                     this._setInterstitialState(isFailed ? INTERSTITIAL_STATE.FAILED : INTERSTITIAL_STATE.CLOSED)
                 }
+                break
+            default:
                 break
         }
     }
